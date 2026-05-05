@@ -2,7 +2,7 @@
 
 \section{Introduction des données}
 
-On s’intéresse à des données d'électricité irlandaise de très grandes dimensions. Il s'agit de la consommation d'électricité enregistrée toutes les 30 minutes pendant 2 semaines (du lundi 5 octobre 2009 à 00:00 au dimanche 18 octobre 2009 à 23h30) pour 6291 individus: résidentiels, petites \& moyennes entreprises, et autres.
+On s'intéresse à des données d'électricité irlandaise de très grandes dimensions. Il s'agit de la consommation d'électricité enregistrée toutes les 30 minutes pendant 2 semaines (du lundi 5 octobre 2009 à 00:00 au dimanche 18 octobre 2009 à 23h30) pour 6291 individus: résidentiels, petites \& moyennes entreprises, et autres.
 Ces données sont des données fonctionnelles car elles sont constituées d’un certain nombre de valeurs discrètes qui ont été mesurées, enregistrées par le CER (Commission for Energy Regulation), mais dont l’ensemble reflète une variation régulière. Comme en théorie, on pourrait obtenir une grande quantité de points, aussi rapprochés que l’on veut, on voit que l’on obtient une courbe et que l’on peut traiter la donnée comme une fonction.
 
 \section{Etude descriptive des données}
@@ -32,7 +32,7 @@ En utilisant une approche simultanée entre les graphes des individus et des var
 
 Pour le cas particulier du dimanche, on constate que les variables sont toutes négativement corrélés au deuxième axe. Cet axe explique la consommation, qui s'avère être faible.
 
-\chapter{Présentation du calage}
+\section{Présentation du calage}
 
 En théorie des sondages, nous sommes souvent confrontés à l'estimation du total d'une variable d'intérêt Y
 
@@ -136,7 +136,7 @@ Le coefficient de variation vaut:
 c_v=\frac{\sqrt{Var(\hat{t_{wstr}})}}{\bar{\hat{t_{wstr}}}} = 0.02203803 \quad (2.203803\%)
 \end{equation*}
 
-\chapter{Présentation du calage sur CP}
+\section{Présentation du calage sur CP}
 
 Le calage en présence de beaucoup de variables auxiliaires peut s'avérer instable surtout s'il y'a des collinéarités entre les variables auxiliaires. Une méthode pour pallier cet inconvénient est de réduire l'information auxiliaire en réalisant une ACP.
 
@@ -156,7 +156,7 @@ Le coefficient de variation vaut:
 cv=\frac{\sqrt{Var(\hat{t_{wy}})}}{\bar{\hat{t_{wy}}}} = 0.009377838 \quad (0.9377838\%)
 \end{equation*}
 
-\chapter{Présentation des programmes R}
+\section{Présentation des programmes R}
 
 Nous avons réalisés l'étude de la méthode de calage selon plusieurs plans:
 \begin{enumerate}
@@ -166,6 +166,6 @@ Nous avons réalisés l'étude de la méthode de calage selon plusieurs plans:
 \item[-] SA2C = Calage sur les 2 premières Composantes principales avec SAS (le meilleur plan).
 \end{enumerate}
 
-\chapter{Conclusion}
+\section{Conclusion}
 
 Ce travail visait à développer plusieurs plans permettant d’estimer la consommation totale d'électricité. Introduire des méthodes issues de la théorie des sondages, nous a permis de comprendre les principes et les enjeux de cette discipline.
