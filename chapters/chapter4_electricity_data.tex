@@ -1,0 +1,171 @@
+\chapter{Présentation des données d'électricité}
+
+\section{Introduction des données}
+
+On s’intéresse à des données d'électricité irlandaise de très grandes dimensions. Il s'agit de la consommation d'électricité enregistrée toutes les 30 minutes pendant 2 semaines (du lundi 5 octobre 2009 à 00:00 au dimanche 18 octobre 2009 à 23h30) pour 6291 individus: résidentiels, petites \& moyennes entreprises, et autres.
+Ces données sont des données fonctionnelles car elles sont constituées d’un certain nombre de valeurs discrètes qui ont été mesurées, enregistrées par le CER (Commission for Energy Regulation), mais dont l’ensemble reflète une variation régulière. Comme en théorie, on pourrait obtenir une grande quantité de points, aussi rapprochés que l’on veut, on voit que l’on obtient une courbe et que l’on peut traiter la donnée comme une fonction.
+
+\section{Etude descriptive des données}
+
+Notre objectif ici est d'isoler le ou les comportements de consommation d'un ensemble d'individus appartenant à une même classe: résidentiels, petites \& moyennes entreprises, ou autres.
+
+\subsection{Consommation moyenne}
+
+On considère la consommation moyenne comme étant la consommation totale prise en moyenne sur toute la population et par jour de la semaine. Sur la figure 1.1, on a représenté cette consommation moyenne en fonction du temps en minutes, et les jours de la semaine y sont délimités par des traits verticals rouges.
+L'analyse de la courbe des individus "résidentiels" et "autres", nous révèle le caractère cyclique de la consommation moyenne sur une période de 24h. La courbe des individus "petites \& moyennes entreprises" indique une consommation moyenne qui s'apparente être cyclique entre le lundi et le vendredi, mais qui ne l'est pas le week-end.
+
+\subsection{Mesure de la dispersion}
+
+L'illustration 1.2 met en relation la variance de la consommation des individus avec la classe d'appartenance. On peut distinguer un écart important entre les variances des petites \& moyennes entreprises et les autres classes.
+
+Etudier la répartition journalière des boîtes à moustaches (n\textsuperscript{o}1: lundi 5 octobre, ..., n\textsuperscript{o}14: dimanche 18 octobre) permet d'abord de confirmer l'intuition que nous avions concernant la consommation moyenne journalière d'électricité qui s'avère être effectivement régulière. De plus, la figure 1.3 indique la présence d'un nombre important d'individus atypiques, en particulier "résidentiel", et qui par conséquent peuvent être problématique car ils peuvent biaiser les résultats, notamment pour la variance intra-classe.
+
+\subsection{Analyse en composantes principales}
+
+La première étape consiste à sélectionner le nombre d’axes factoriels. En utilisant le critère de Kaiser, nous sélectionnons les 3 premières valeurs propres qui expliquent 72.72\% de l’inertie totale du nuage de points. Néanmoins, comme le troisième axe n’est corrélé significativement qu’avec une seule variable, nous ne le considérons pas dans l’interprétation.
+
+Le cercle des corrélations pour le plan formé des deux premiers axes factoriels est représenté figure 1.5 et 1.6. Toutes les variables sont bien représentées dans ce plan factoriel puisqu'elles sont proches du bord du cerle de corrélation. Sur la figure 1.5 on a choisi de prendre les variables représentatives d'un jour entre le lundi et le samedi, soit le vendredi 9 octobre 2009, et pour une meilleure visibilité nous avons divisé la représentation des variables en deux parties: matin-midi et midi-soir. Tandis que sur la figure 1.6 nous avons pris les variables représentatives du dimanche 11 octobre 2009.
+
+On constate que les variables entre 8h et 18h sont bien représentées par rapport au premier axe tandis que le reste des variables est moins bien représenté. On peut donc dire que ce dernier explique la consommation d'électricité.
+
+En utilisant une approche simultanée entre les graphes des individus et des variables, on s'aperçoit que tous les individus sont bien représentés par rapport au premier axe. Par conséquent, ces mêmes individus ont des valeurs élevées pour les variables entre 8h et 18h.
+
+Pour le cas particulier du dimanche, on constate que les variables sont toutes négativement corrélés au deuxième axe. Cet axe explique la consommation, qui s'avère être faible.
+
+\chapter{Présentation du calage}
+
+En théorie des sondages, nous sommes souvent confrontés à l'estimation du total d'une variable d'intérêt Y
+
+\begin{align*}
+& t_{y}=\sum_{k\in U} y_k
+\end{align*}
+
+\section{Estimation par Horvitz-Thompson}
+
+Horvitz et Thompson (1952) ont présenté un estimateur linéaire sans biais d'un total $t_y$ valable pour tout plan de sondage
+
+\begin{align*}
+& \hat{t_{y}}=\sum_{k\in s} \frac{y_k}{\pi_k}
+\end{align*}
+
+Cet estimateur est appelé le $\pi$-estimateur ou estimateur de Horvitz-Thompson. En effet, les valeurs prises par le caractère y sur les unités de l'échantillon sont dilatées par l'inverse des probabilités d'inclusion.
+
+\begin{theorem}
+Si $\pi_k > 0$, $k\in U$, alors $\hat{t_y}$ estime $t_y$ sans biais.
+\end{theorem}
+
+\textit{Demonstration.}
+
+\begin{align*}
+& \mathbb{E}[\hat{ty}] = \mathbb{E}\left[ \sum_{k\in s} \frac{y_k}{\pi_k} \right] \\
+& \quad\quad\quad = \mathbb{E}\left[ \sum_{k\in U} \frac{I_k y_k}{\pi_k} \right] \quad \textnormal{où } I_k \textnormal{ est une variable indicatrice qui vaut 1 si } k\in s \textnormal{ et } 0 \textnormal{ sinon} \\
+& \quad\quad\quad = \sum_{k\in U} \frac{\mathbb{E}[I_k] y_k}{\pi_k} \\
+& \quad\quad\quad = \sum_{k\in U} y_k \\
+& \quad\quad\quad = t_y \\
+& \textnormal{Par conséquent, } Biais(\hat{ty})=\mathbb{E}[\hat{ty}]-t_y=0 \quad\quad\quad \blacksquare
+\end{align*}
+
+\section{Estimation par calage}
+
+Les méthodes de calage ont été formalisées par Deville et Särndal (1992). Ils donnent un cadre général pour l'estimation par calage et étudient les propriétés de ces estimateurs. L'information auxiliaire utilisée est un vecteur de totaux connus $t_{x}$.
+
+\begin{definition}[Estimateur de calage]
+La méthode de calage consiste à chercher de nouveaux coefficients de pondération à affecter aux variables.
+L'estimateur par calage du total est un estimateur linéaire homogène qui s'écrit:
+\begin{align*}
+& \hat{t}_{w,y}=\sum_{k\in s} w_{ks}y_k
+\end{align*}
+\end{definition}
+
+\begin{proposition}[]
+Les poids $w_{ks}$ dépendent de l'échantillon aléatoire et sont déterminés de sorte que l'estimateur soit calé sur les totaux des caractères auxiliaires.
+\begin{align*}
+& \hat{t}_{wx}=t_x \quad \textnormal{où } \quad \hat{t}_{wx}=\sum_{k\in s} w_{ks}x_k
+\end{align*}
+\end{proposition}
+
+\begin{notation}
+Par commodité on pose $w_k=w_{ks}$, pour tout $k\in s$.
+\end{notation}
+
+\begin{remark}
+Comme il existe une infinité de poids $w_k$ qui satisfait la proposition précédente, on va chercher des poids proches des poids $\pi_k^{-1}$ du $\pi$-estimateur. Notons:
+\begin{align*}
+& d_k=\frac{1}{\pi_k}, \quad k\in s
+\end{align*}
+\end{remark}
+
+\begin{theorem}
+Si $\pi_k > 0$, $k\in U$, alors $\hat{t_{wy}}$ estime asymptotiquement sans biais $t_y$.
+\end{theorem}
+
+\section{Application du calage}
+
+On souhaite estimer la consommation totale d'électricité de la deuxième semaine, $t_y=1485176258$. Il y'a 336 variables auxiliaires, qui représentent les consommations prises toutes les 30 minutes pendant la première semaine.
+
+\subsection{Calage selon un plan SAS}
+
+Soit U la population d'étude composée de N=6291 individus qui consomment de l'électricité sur deux semaines consécutives. La première approche consiste à sélectionner un échantillon $s \subset U$ selon un plan de sondage aléatoire simple sans remise (SAS) de taille n=600.
+
+On a simulé I=500 échantillons aléatoires simples sans remise de taille n=600, en utilisant la méthode de calage présentée au paragraphe 2.2 on obtient une estimation moyenne de $\bar{\hat{t}}_{wy}=1492219885$.
+
+Le rapport des variances vaut:
+\begin{equation*}
+R=\frac{Var(\hat{t_{wy}})}{Var(\hat{t_y})}\approx\frac{1.747882e+17}{3.690269e+18}= 0.047365
+\end{equation*}
+
+Le coefficient de variation vaut:
+\begin{equation*}
+c_v=\frac{\sqrt{Var(\hat{t_{wy}})}}{\bar{\hat{t_{wy}}}} = 0.011618 \quad (1.1618\%)
+\end{equation*}
+
+\subsection{Calage selon un plan Stratifié avec SAS}
+
+Notre population d'étude $U$ est divisée dans $H=3$ strates avec tailles $N_1=4225$ (Autres), $N_2=485$ (P\&M entreprises), et $N_3=1581$ (Résidents).
+
+On a simulé $I=500$ échantillons tirés selon le plan Stratifié avec SAS chacun de taille $n=600$.
+On obtient une estimation moyenne de $\bar{\hat{t_{wstr}}}=1504942728$.
+
+Le rapport des variances vaut:
+\begin{equation*}
+R=\frac{Var(\hat{t_{wstr}})}{Var(\hat{t_{str}})}\approx 0.231561
+\end{equation*}
+
+Le coefficient de variation vaut:
+\begin{equation*}
+c_v=\frac{\sqrt{Var(\hat{t_{wstr}})}}{\bar{\hat{t_{wstr}}}} = 0.02203803 \quad (2.203803\%)
+\end{equation*}
+
+\chapter{Présentation du calage sur CP}
+
+Le calage en présence de beaucoup de variables auxiliaires peut s'avérer instable surtout s'il y'a des collinéarités entre les variables auxiliaires. Une méthode pour pallier cet inconvénient est de réduire l'information auxiliaire en réalisant une ACP.
+
+\section{Application du calage sur CP}
+
+On souhaite toujours estimer la consommation totale d'électricité de la deuxième semaine, $t_y=1485176258$. La matrice des variables auxiliaires de départ $X$ est de dimension $6291 \times 336$.
+
+On a simulé I=500 échantillons aléatoires simples sans remise de taille n=600, en utilisant la méthode de calage sur les r=2 composantes principales on obtient une estimation moyenne de $\bar{\hat{t}}_{wy}=1480138029$.
+
+Le rapport des variances vaut:
+\begin{equation*}
+R=\frac{Var(\hat{t_{wy}})}{Var(\hat{t_y})}\approx\frac{1.088333e+17}{3.678668e+18}=0.029585
+\end{equation*}
+
+Le coefficient de variation vaut:
+\begin{equation*}
+cv=\frac{\sqrt{Var(\hat{t_{wy}})}}{\bar{\hat{t_{wy}}}} = 0.009377838 \quad (0.9377838\%)
+\end{equation*}
+
+\chapter{Présentation des programmes R}
+
+Nous avons réalisés l'étude de la méthode de calage selon plusieurs plans:
+\begin{enumerate}
+\item[-] SC = Calage selon un plan SAS.
+\item[-] SSC = Calage selon un plan Stratifié avec SAS.
+\item[-] SAC = Calage sur Composantes principales avec SAS.
+\item[-] SA2C = Calage sur les 2 premières Composantes principales avec SAS (le meilleur plan).
+\end{enumerate}
+
+\chapter{Conclusion}
+
+Ce travail visait à développer plusieurs plans permettant d’estimer la consommation totale d'électricité. Introduire des méthodes issues de la théorie des sondages, nous a permis de comprendre les principes et les enjeux de cette discipline.
