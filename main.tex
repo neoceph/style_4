@@ -10,7 +10,7 @@
 
 
 %----------------------------------------------------------------------------------------
-%\tPACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
 %----------------------------------------------------------------------------------------
 
 \documentclass[11pt,fleqn]{book} % Default font size and left-justified equations
@@ -25,7 +25,6 @@
 \usepackage[utf8]{inputenc} % Required for including letters with accents
 \usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
 \usepackage{amsthm}
-\usepackage{tikz}
 
 % Bibliography
 % \usepackage[style=alphabetic,sorting=nyt,sortcites=true,autopunct=true,babel=hyphen,hyperref=true,abbreviate=false,backref=true,backend=biber]{biblatex}
@@ -36,89 +35,69 @@
 \usepackage{bookstyle} % Load the custom style package for document structure and theorem formatting
 
 %----------------------------------------------------------------------------------------
-%\tDefinitions of new commands
+%	Definitions of new commands
 %----------------------------------------------------------------------------------------
 
 \def\R{\mathbb{R}}
 \newcommand{\cvx}{convex}
-\title{Scientific Machine Learning}
-\newcommand{\booksubtitle}{Convex Analysis and Optimization}
-\newcommand{\booklicense}{MITACS Globalink Research Internship}
-\author{Abdullah Al Amin}
-\newcommand{\authorsubtitle}{University of Dayton}
-
-\makeatletter
-\newcommand{\booktitle}{\@title}
-\newcommand{\bookauthor}{\@author}
-\makeatother
-
 \begin{document}
 
-\frontmatter
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
 
-% ---- Half Title Page ----
-\AddToShipoutPictureBG*{%
-  \AtPageLowerLeft{\includegraphics[width=\paperwidth,height=\paperheight]{esahubble.png}}%
-}
-\begin{titlepage}
-\begin{flushleft}
-{\color{white}
-\textbf{\fontfamily{qcs}\fontsize{42}{48}\selectfont \booktitle\\}
-\par\noindent\textcolor{white}{\rule{\textwidth}{4pt}}\\
-\par\medskip
-{\textbf{\large \textit{\booksubtitle}}}\par\medskip
-\begin{flushright}
-\Large First Edition
-\end{flushright}
-\vspace{\fill}
-\par}
-\end{flushleft}
-\end{titlepage}
-\ClearShipoutPictureBG
-% ---- End of Half Title Page ----
+\begingroup
+\thispagestyle{empty}
+\AddToShipoutPicture*{\put(0,0){\includegraphics[scale=1.25]{esahubble}}} % Image background
+\centering
+\vspace*{5cm}
+\par\normalfont\fontsize{35}{35}\sffamily\selectfont
+\textbf{Scientific Machine Learning}\\
+{\LARGE Convex Analysis and Optimization}\par % Book title
+\vspace*{1cm}
+{\Huge Abdullah Al Amin}\par % Author name
+\endgroup
 
+%----------------------------------------------------------------------------------------
+%	COPYRIGHT PAGE
+%----------------------------------------------------------------------------------------
+
+\newpage
+~\vfill
 \thispagestyle{empty}
 
-% ---- Title Page ----
-\begin{titlepage}
-\begin{flushleft}
-{\color{black}    
-\textbf{\fontfamily{qcs}\fontsize{42}{48}\selectfont \booktitle\\}
-\par\noindent\rule{\textwidth}{4pt}\\
-% 
-\par\medskip
-{\textbf{\large \textit{\booksubtitle}}}\par\medskip
-\begin{flushright}
-\Large First Edition
-\end{flushright}
-\vspace{\fill}
-\textbf{\large \bookauthor}\\[3.5pt]
-\textbf{\large \textit{\authorsubtitle}}
-\vspace{\fill}
-\par}
-\end{flushleft}
-\end{titlepage}
-% ---- End of Title Page ----
+%\noindent Copyright \copyright\ 2014 Andrea Hidalgo\\ % Copyright notice
 
-\thispagestyle{empty}
-\begin{flushleft}
-\vspace*{\fill}
-This book was typeset using \LaTeX{} software.\\
-\vspace{\fill}
-Copyright \textcopyright{} \the\year{} \bookauthor\\
-License: \booklicense
-\end{flushleft}
+\noindent \textsc{Summer Research Internship, University of Western Ontario}\\
 
-\addtocounter{page}{2}
-\chapter*{Preface}
-Some example preface text goes here. This is where you can introduce the reader to the content of the book, explain the motivation behind it, and provide any necessary background information.
+\noindent \textsc{github.com/LaurethTeX/Clustering}\\ % URL
+
+\noindent This research was done under the supervision of Dr. Pauline Barmby with the financial support of the MITACS Globalink Research Internship Award within a total of 12 weeks, from June 16th to September 5th of 2014.\\ % License information
+
+\noindent \textit{First release, August 2014} % Printing/edition date
+
+%----------------------------------------------------------------------------------------
+%	TABLE OF CONTENTS
+%----------------------------------------------------------------------------------------
 
 \chapterimage{head1.png} % Table of contents heading image
-\pagestyle{empty}
-\setcounter{tocdepth}{3}
-\tableofcontents
-\mainmatter
-\pagestyle{fancy}
+
+\pagestyle{empty} % No headers
+
+\tableofcontents % Print the table of contents itself
+
+%\cleardoublepage % Forces the first chapter to start on an odd page so it's on the right
+
+\pagestyle{fancy} % Print headers again
+
+%----------------------------------------------------------------------------------------
+%	CHAPTER 1
+%----------------------------------------------------------------------------------------
+
+%----------------------------------------------------------------------------------------
+%	CHAPTERS
+%----------------------------------------------------------------------------------------
+
 
 \bookchapter{chapters/chapter1_convex_sets}
 \bookchapter{chapters/chapter2_dummy_chapter}
