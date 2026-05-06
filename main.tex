@@ -62,16 +62,16 @@
 }
 \begin{titlepage}
 \begin{flushleft}
+{\color{white}
 \textbf{\fontfamily{qcs}\fontsize{42}{48}\selectfont \booktitle\\}
-\par\noindent\rule{\textwidth}{4pt}\\
-\begin{tikzpicture}
-\shade[bottom color=lightgray,top color=white] (0,0) rectangle (\textwidth, 1.5)
-node[midway] {\textbf{\large \textit{\booksubtitle}}};
-\end{tikzpicture}
+\par\noindent\textcolor{white}{\rule{\textwidth}{4pt}}\\
+\par\medskip
+{\textbf{\large \textit{\booksubtitle}}}\par\medskip
 \begin{flushright}
 \Large First Edition
 \end{flushright}
 \vspace{\fill}
+\par}
 \end{flushleft}
 \end{titlepage}
 \ClearShipoutPictureBG
@@ -82,12 +82,12 @@ node[midway] {\textbf{\large \textit{\booksubtitle}}};
 % ---- Title Page ----
 \begin{titlepage}
 \begin{flushleft}
+{\color{black}    
 \textbf{\fontfamily{qcs}\fontsize{42}{48}\selectfont \booktitle\\}
 \par\noindent\rule{\textwidth}{4pt}\\
-\begin{tikzpicture}
-\shade[bottom color=lightgray,top color=white] (0,0) rectangle (\textwidth, 1.5)
-node[midway] {\textbf{\large \textit{\booksubtitle}}};
-\end{tikzpicture}
+% 
+\par\medskip
+{\textbf{\large \textit{\booksubtitle}}}\par\medskip
 \begin{flushright}
 \Large First Edition
 \end{flushright}
@@ -95,6 +95,7 @@ node[midway] {\textbf{\large \textit{\booksubtitle}}};
 \textbf{\large \bookauthor}\\[3.5pt]
 \textbf{\large \textit{\authorsubtitle}}
 \vspace{\fill}
+\par}
 \end{flushleft}
 \end{titlepage}
 % ---- End of Title Page ----
