@@ -84,9 +84,9 @@
 
 
 % Chapter include helper with per-chapter bibliography
-\let\bookchapter\chapter
-\newcommand{\chaptertitle}[1]{\bookchapter{#1}}
-\renewcommand{\chapter}[1]{%
+\let\latexchapter\chapter
+\newcommand{\chaptertitle}[1]{\latexchapter{#1}}
+\newcommand{\bookchapter}[1]{%
   \begin{refsection}%
     \input{#1}%
     \printbibliography[heading=subbibliography,title={Chapter \thechapter Bibliography}]%
