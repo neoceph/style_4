@@ -128,16 +128,16 @@
 % Chapter text styling
 \titlecontents{chapter}[0cm] % Indentation
 {\addvspace{15pt}\large\sffamily\bfseries} % Spacing and font options for chapters
-{\color{FlyersRed}\contentslabel[\Large\thecontentslabel]{0.75cm}\color{FlyersRed}} % Chapter number
+{\color{black}\contentslabel[\Large\thecontentslabel]{0.75cm}\color{black}} % Chapter number
 {}  
 {\color{FlyersRed}\normalsize\sffamily\bfseries\hfill\thecontentspage} % Page number
 
 % Section text styling
 \titlecontents{section}[0.75cm] % Indentation
 {\addvspace{5pt}\sffamily\bfseries\color{FlyersRed}} % Spacing and font options for sections
-{\color{FlyersRed!60}\contentslabel[\thecontentslabel]{0.75cm}} % Section number
+{\color{FlyersRed}\contentslabel[\thecontentslabel]{0.75cm}} % Section number
 {}
-{\sffamily\color{FlyersRed!60}\;\titlerule*[.5pc]{.}\;\thecontentspage} % Page number
+{\sffamily\color{FlyersRed}\;\titlerule*[.5pc]{.}\;\thecontentspage} % Page number
 []
 
 % Subsection text styling
@@ -165,6 +165,14 @@
 {}
 {}
 {}
+
+% Subsubsection text styling
+\titlecontents{subsubsection}[3.0cm] % Indentation (adjusted to nest under subsection)
+{\addvspace{1pt}\sffamily\small\color{FlyersBlue}} % Font and Color
+{\color{FlyersBlue}\contentslabel[\thecontentslabel]{1.25cm}} % Number label
+{}
+{\sffamily\color{FlyersBlue}\;\titlerule*[.5pc]{.}\;\thecontentspage} % Dots and Page number
+[]
  
 %----------------------------------------------------------------------------------------
 %\tPAGE HEADERS
@@ -359,23 +367,42 @@ innerbottommargin=5pt]{cBox}
 %----------------------------------------------------------------------------------------
 
 \makeatletter
-\renewcommand{\@seccntformat}[1]{\llap{\textcolor{FlyersRed}{\csname the#1\endcsname}\hspace{1em}}}
+
+% 1. Custom Numbering Color (Margin Numbers)
+% Section = Red, Subsection & Subsubsection = Blue
+\renewcommand{\@seccntformat}[1]{%
+  \llap{%
+    \ifstrequal{#1}{section}%
+      {\textcolor{FlyersRed}{\csname the#1\endcsname}}%
+      {\textcolor{FlyersBlue}{\csname the#1\endcsname}}%
+    \hspace{1em}%
+  }%
+}
+
+% 2. Section Title - Red Text
 \renewcommand{\section}{\@startsection{section}{1}{\z@}
 {-4ex \@plus -1ex \@minus -.4ex}
 {1ex \@plus.2ex }
-{\normalfont\large\sffamily\bfseries}}
+{\normalfont\large\sffamily\bfseries\color{FlyersRed}}}
+
+% 3. Subsection Title - Blue Text
 \renewcommand{\subsection}{\@startsection {subsection}{2}{\z@}
 {-3ex \@plus -0.1ex \@minus -.4ex}
-{0.5ex \@plus.2ex }
-{\normalfont\sffamily\bfseries}}
+{1.5ex \@plus.2ex }
+{\normalfont\sffamily\bfseries\color{FlyersBlue}}}
+
+% 4. Subsubsection Title - Blue Text
 \renewcommand{\subsubsection}{\@startsection {subsubsection}{3}{\z@}
 {-2ex \@plus -0.1ex \@minus -.2ex}
 {.2ex \@plus.2ex }
-{\normalfont\small\sffamily\bfseries}}                        
+{\normalfont\small\sffamily\bfseries\color{FlyersBlue}}}
+
+% 5. Paragraph (Neutral)
 \renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}
 {-2ex \@plus-.2ex \@minus .2ex}
 {.1ex}
 {\normalfont\small\sffamily\bfseries}}
+
 
 %----------------------------------------------------------------------------------------
 %	HYPERLINKS IN THE DOCUMENTS
@@ -435,4 +462,8 @@ innerbottommargin=5pt]{cBox}
 \fi
 \fi
 }
+
+\setcounter{secnumdepth}{3} % Numbering for subsubsections
+\setcounter{tocdepth}{3}    % Include subsubsections in TOC
+
 \makeatother
