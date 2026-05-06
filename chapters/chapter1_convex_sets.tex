@@ -1,11 +1,11 @@
 \chapterimage{head2.png} % Chapter heading image
-\chapter{Convex Sets}
+\chaptertitle{Convex Sets}
 \section{Convexity}
 \subsection{Cone}
 \begin{definition}[Cone]
 A set $K \in \R^n$, when $x \in K $ implies $\alpha x \in K$.
 \end{definition}
-A non convex cone can be hyper-plane.\\
+A non convex cone can be hyper-plane~\autocite{aliPowderBedFusion2022}.\\
 For convex cone $x + y \in K, \forall x,y \in K$.\\
 Cone don't need to be "pointed". e.g. \\
 Direct sums of cones $C_1 + C_2 = \{ x = x_1+x_2 | x_1 \in C_1, x_2 \in C_2 \}$.\\
@@ -26,7 +26,7 @@ Convex hull on $S = \cap \{C | S\in C, C is convex\}$\\
 \begin{example}
 $Co \{ x_1,x_2,\cdots,x_m\} = \{ \sum_{i=1}^m \alpha_i x_i | \alpha \in \delta_m \}$
 \end{example}
-For a convex set $x \in C \Rightarrow x = \sum \alpha_i x_i$. 
+For a convex set $x \in C \Rightarrow x = \sum \alpha_i x_i$~\autocite{aminComputationalHomogenizationElastic2018}. 
 \begin{theorem}[Carathéodory's theorem]
 If a point $x \in \R^d$ lies in the convex hull of a set $P$, there is a subset $P'$ of $P$ consisting of $d + 1$ or fewer points such that $x$ lies in the convex hull of $P'$. Equivalently, x lies in an r-simplex with vertices in P.
 \end{theorem}
@@ -43,7 +43,7 @@ Let $C \in \R^n$ be convex, $f:C \to \R$ is strictly convex on f if $x,y \in C \
 \begin{definition}[Strongly convex]
 $f:C \to \R$ is strongly convex with modules $u \ge 0$ if $f - \frac{1}{2}u || \cdot ||^2$ is convex.
 \end{definition}
-Interpretation: There is a convex quadratic $\frac{1}{2}u || \cdot ||^2$ that lower bounds f.
+Interpretation: There is a convex quadratic $\frac{1}{2}u || \cdot ||^2$ that lower bounds f~\autocite{aminiMLCPMProcessMonitoring2018}.
 \begin{example}
 $\min_{x \in C} f(x) \leftrightarrow \min \bar{f}(x)$
 Useful to turn this into an unconstrained problem. \\

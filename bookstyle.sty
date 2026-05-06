@@ -83,6 +83,16 @@
 }
 
 
+% Chapter include helper with per-chapter bibliography
+\let\bookchapter\chapter
+\newcommand{\chaptertitle}[1]{\bookchapter{#1}}
+\renewcommand{\chapter}[1]{%
+  \begin{refsection}%
+    \input{#1}%
+    \printbibliography[heading=subbibliography,title={Chapter \thechapter Bibliography}]%
+  \end{refsection}%
+}
+
 \usepackage{graphicx} % Required for including pictures
 \graphicspath{{Pictures/}} % Specifies the directory where pictures are stored
 % \graphicspath{{Plots/}}
