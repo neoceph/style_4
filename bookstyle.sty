@@ -70,6 +70,14 @@
 \definecolor{FlyersCodeString}{HTML}{B03A2E}
 \definecolor{FlyersCodeNumber}{HTML}{5C6370}
 
+% User-tunable code block controls
+\newcommand{\pythoncodebackgroundmix}{100}
+\newcommand{\pythoncodebackgroundopacity}{0.1}
+\newcommand{\pythoncodenumbersep}{14pt}
+\NewDocumentCommand{\setpythoncodebackgroundmix}{m}{\renewcommand{\pythoncodebackgroundmix}{#1}}
+\NewDocumentCommand{\setpythoncodebackgroundopacity}{m}{\renewcommand{\pythoncodebackgroundopacity}{#1}}
+\NewDocumentCommand{\setpythoncodenumbersep}{m}{\renewcommand{\pythoncodenumbersep}{#1}}
+
 \lstdefinestyle{flyerspython}{
   language=Python,
   basicstyle=\ttfamily\small,
@@ -79,7 +87,7 @@
   numberstyle=\scriptsize\color{FlyersCodeNumber},
   numbers=left,
   stepnumber=1,
-  numbersep=10pt,
+  numbersep=\pythoncodenumbersep,
   tabsize=4,
   showstringspaces=false,
   keepspaces=true,
@@ -96,8 +104,8 @@
   listing file={#3},
   listing options={style=flyerspython,#1},
   colframe=FlyersBlue,
-  colback=FlyersBlue,
-  opacityback=0.15,
+  colback=FlyersBlue!\pythoncodebackgroundmix!white,
+  opacityback=\pythoncodebackgroundopacity,
   boxrule=1.2pt,
   arc=2mm,
   left=2mm,
@@ -112,6 +120,12 @@
   colbacktitle=white,
   boxed title style={colframe=FlyersBlue,colback=white,boxrule=1pt},
   attach boxed title to top left={xshift=2mm,yshift=-2mm}
+}
+
+% Convenience wrapper for splitting one source file into commented chunks.
+% Usage: \pythoncodefilerange[extra-listings-options]{Title}{first line}{last line}{file}
+\NewDocumentCommand{\pythoncodefilerange}{O{} m m m m}{%
+  \pythoncodefile[firstline=#3,lastline=#4,firstnumber=#3,#1]{#2}{#5}%
 }
 
 %----------------------------------------------------------------------------------------
@@ -135,13 +149,15 @@
 %   TABLE OF CONTENTS
 %----------------------------------------------------------------------------------------
 
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
 \contentsmargin{0cm} 
-\titlecontents{chapter}[0cm]{\addvspace{15pt}\large\sffamily\bfseries}{\color{black}\contentslabel[\Large\thecontentslabel]{0.75cm}\color{black}}{}{\color{FlyersRed}\normalsize\sffamily\bfseries\hfill\thecontentspage}
-\titlecontents{section}[0.75cm]{\addvspace{5pt}\sffamily\bfseries\color{FlyersRed}}{\color{FlyersRed}\contentslabel[\thecontentslabel]{0.75cm}}{}{\sffamily\color{FlyersRed}\;\titlerule*[.5pc]{.}\;\thecontentspage}[]
-\titlecontents{subsection}[1.75cm]{\addvspace{1pt}\sffamily\small\color{FlyersBlue}}{\color{FlyersBlue}\contentslabel[\thecontentslabel]{1.0cm}}{}{\sffamily\color{FlyersBlue}\;\titlerule*[.5pc]{.}\;\thecontentspage}[] 
+\titlecontents{chapter}[0cm]{\addvspace{15pt}\large\sffamily\bfseries}{\color{black}\contentslabel[\Large\thecontentslabel]{1.0cm}\color{black}}{}{\color{FlyersRed}\normalsize\sffamily\bfseries\hfill\thecontentspage}
+\titlecontents{section}[0.75cm]{\addvspace{5pt}\sffamily\bfseries\color{FlyersRed}}{\color{FlyersRed}\contentslabel[\thecontentslabel]{1.0cm}}{}{\sffamily\color{FlyersRed}\;\titlerule*[.5pc]{.}\;\thecontentspage}[]
+\titlecontents{subsection}[1.75cm]{\addvspace{1pt}\sffamily\small\color{FlyersBlue}}{\color{FlyersBlue}\contentslabel[\thecontentslabel]{1.25cm}}{}{\sffamily\color{FlyersBlue}\;\titlerule*[.5pc]{.}\;\thecontentspage}[] 
 \titlecontents{lsection}[0em]{\footnotesize\sffamily}{}{}{}
 \titlecontents{lsubsection}[.5em]{\normalfont\footnotesize\sffamily}{}{}{}
-\titlecontents{subsubsection}[3.0cm]{\addvspace{1pt}\sffamily\small\color{FlyersBlue}}{\color{FlyersBlue}\contentslabel[\thecontentslabel]{1.25cm}}{}{\sffamily\color{FlyersBlue}\;\titlerule*[.5pc]{.}\;\thecontentspage}[]
+\titlecontents{subsubsection}[3.0cm]{\addvspace{1pt}\sffamily\small\color{FlyersBlue}}{\color{FlyersBlue}\contentslabel[\thecontentslabel]{1.5cm}}{}{\sffamily\color{FlyersBlue}\;\titlerule*[.5pc]{.}\;\thecontentspage}[]
 
 %----------------------------------------------------------------------------------------
 %   PAGE STYLES

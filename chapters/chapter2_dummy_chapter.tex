@@ -8,11 +8,16 @@ This is~\cite{adamsLaserPrintingSilver2024} a dummy chapter copied in spirit fro
 Replace this content with real material when available.
 
 \section{RNN Code Example}
-The following Python script is included directly from \texttt{codes/RNN.py}.
+The following Python script is split into logical blocks so each part can be explained inline.
 
-\pythoncodefile{RNN Training Script (\texttt{codes/RNN.py})}{codes/RNN.py}
-
-% \pythoncodefile[listing options={style=flyerspython,firstline=1,lastline=32,firstnumber=1}]{RNN: Data Prep}{codes/RNN.py}
+\pythoncodefilerange{RNN: Data Preparation}{1}{25}{codes/RNN.py}
 
 \paragraph{What this section does}
-Loads data, builds tensors, and prepares sequence batches.
+Generates a sine-wave series, creates sliding-window sequences, and converts arrays into PyTorch tensors.
+
+\pythoncodefilerange{RNN: Model Definition and Optimizer Setup}{27}{42}{codes/RNN.py}
+
+\paragraph{What this section does}
+Defines a simple recurrent network and configures mean-squared error loss with Adam optimization.
+
+\pythoncodefilerange{RNN: Training, Prediction, and Visualization}{44}{74}{codes/RNN.py}
