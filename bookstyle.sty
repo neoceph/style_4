@@ -70,8 +70,8 @@
   {}
   {%
     \iffieldundef{url}
-      {\printfield[titlecase]{title}}%
-      {\href{\thefield{url}}{\printfield[titlecase]{title}}}%
+      {\textcolor{FlyersBlue}{\printfield[titlecase]{title}}}%
+      {\href{\thefield{url}}{\textcolor{FlyersBlue}{\printfield[titlecase]{title}}}}%
   }%
 }
 \renewbibmacro*{urldate}{}
@@ -85,7 +85,7 @@
 
 % Bibliography heading style (left-aligned red title)
 \defbibheading{subbibliography}[1]{%
-  \par\noindent\textcolor{FlyersRed}{\large\sffamily\bfseries #1}\par\nobreak\vspace{0.75\baselineskip}%
+  \par\noindent\hspace*{-\bibhang}\textcolor{FlyersRed}{\large\sffamily\bfseries #1}\par\nobreak\vspace{0.75\baselineskip}%
 }
 
 % Chapter include helper with per-chapter bibliography
