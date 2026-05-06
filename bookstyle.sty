@@ -129,17 +129,17 @@
 {\color{FlyersRed!60}\normalsize\sffamily\bfseries\;\titlerule*[.5pc]{.}\;\thecontentspage} % Page number
 % Section text styling
 \titlecontents{section}[1.25cm] % Indentation
-{\addvspace{5pt}\sffamily\bfseries} % Spacing and font options for sections
-{\contentslabel[\thecontentslabel]{1.25cm}} % Section number
+{\addvspace{5pt}\sffamily\bfseries\color{black}} % Spacing and font options for sections
+{\color{black}\contentslabel[\thecontentslabel]{1.25cm}} % Section number
 {}
-{\sffamily\hfill\color{black}\thecontentspage} % Page number
+{\sffamily\color{black}\hfill\thecontentspage} % Page number
 []
 % Subsection text styling
 \titlecontents{subsection}[1.25cm] % Indentation
-{\addvspace{1pt}\sffamily\small} % Spacing and font options for subsections
-{\contentslabel[\thecontentslabel]{1.25cm}} % Subsection number
+{\addvspace{1pt}\sffamily\small\color{black}} % Spacing and font options for subsections
+{\color{black}\contentslabel[\thecontentslabel]{1.25cm}} % Subsection number
 {}
-{\sffamily\;\titlerule*[.5pc]{.}\;\thecontentspage} % Page number
+{\sffamily\color{black}\;\titlerule*[.5pc]{.}\;\thecontentspage} % Page number
 [] 
 
 %----------------------------------------------------------------------------------------
@@ -353,7 +353,7 @@ innerbottommargin=5pt]{cBox}
 %----------------------------------------------------------------------------------------
 
 \makeatletter
-\renewcommand{\@seccntformat}[1]{\llap{\textcolor{FlyersRed}{\csname the#1\endcsname}\hspace{1em}}}                    
+\renewcommand{\@seccntformat}[1]{\llap{\textcolor{FlyersRed}{\csname the#1\endcsname}\hspace{1em}}}
 \renewcommand{\section}{\@startsection{section}{1}{\z@}
 {-4ex \@plus -1ex \@minus -.4ex}
 {1ex \@plus.2ex }
