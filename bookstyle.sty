@@ -1,37 +1,48 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{reportstyle}[2026/05/05 Document layout and theorem styling]
+\ProvidesPackage{bookstyle}[2026/05/05 Document layout and theorem styling]
 
 %----------------------------------------------------------------------------------------
-%\tVARIOUS REQUIRED PACKAGES
+%   REQUIRED PACKAGES
 %----------------------------------------------------------------------------------------
 
-\usepackage{titlesec} % Allows customization of titles
+\usepackage{titlesec} 
+\usepackage{xcolor} 
+\usepackage{xparse} 
+\usepackage{etoolbox} 
+\usepackage[skins,listings,theorems]{tcolorbox} 
+\usepackage{graphicx} 
+\usepackage{lipsum} 
+\usepackage{tikz} 
+\usepackage[english]{babel} 
+\usepackage{enumitem} 
+\usepackage{booktabs} 
+\usepackage{eso-pic} 
+\usepackage{titletoc} 
+\usepackage{fancyhdr} 
+\usepackage{amsmath,amsfonts,amssymb,amsthm} 
+\RequirePackage[framemethod=default]{mdframed}
 
-\usepackage{xcolor} % Required for specifying colors by name
-\usepackage{xparse} % Custom tcolorbox env args
-\usepackage{etoolbox} % biblatex boolean expressions
-\usepackage[skins,listings,theorems]{tcolorbox} % Styled content boxes
+%----------------------------------------------------------------------------------------
+%   COLORS & CONFIG
+%----------------------------------------------------------------------------------------
 
-% University of Dayton color scheme
 \definecolor{FlyersBlue}{HTML}{003087}
 \definecolor{FlyersRed}{HTML}{CE0037}
 \definecolor{FlyersRedDamp}{HTML}{CE1141}
 
 \newcommand{\bookedition}{First Edition}
+\graphicspath{{Pictures/}} 
 
-% tcolorbox style controls (color/linewidth/background/linestyle)
+%----------------------------------------------------------------------------------------
+%   TCOLORBOX STYLING
+%----------------------------------------------------------------------------------------
+
 \makeatletter
 \newcommand{\tcblinecolor}{FlyersBlue}
 \newcommand{\tcblinethickness}{1.5pt}
 \tcbset{
-  color/.code={%
-    \renewcommand{\tcblinecolor}{#1}%
-    \tcbset{colframe=#1, coltitle=#1}%
-  },
-  linewidth/.code={%
-    \renewcommand{\tcblinethickness}{#1}%
-    \tcbset{boxrule=#1}%
-  },
+  color/.code={\renewcommand{\tcblinecolor}{#1}\tcbset{colframe=#1, coltitle=#1}},
+  linewidth/.code={\renewcommand{\tcblinethickness}{#1}\tcbset{boxrule=#1}},
   background/.style={colback=#1},
   linestyle/.code={%
     \def\temp{#1}\def\dash{dashed}%
@@ -45,226 +56,110 @@
 \makeatother
 
 \NewDocumentEnvironment{tcb}{ O{} m }{%
-  \begin{tcolorbox}[
-    enhanced,
-    arc=3mm,
-    boxrule=0.6pt,
-    colframe=\tcblinecolor,
-    colback=white,
-    width=\linewidth,
-    fonttitle=\bfseries,
-    coltitle=\tcblinecolor,
-    colbacktitle=\tcblinecolor!10,
-    boxed title style={colframe=\tcblinecolor, colback=\tcblinecolor!10, boxrule=0.6pt},
-    attach boxed title to top center={yshift=-2mm},
-    title={#2},
-    before skip=2mm,
-    after skip=2mm,
-    #1
-  ]
+  \begin{tcolorbox}[enhanced, arc=3mm, boxrule=0.6pt, colframe=\tcblinecolor, colback=white, width=\linewidth, fonttitle=\bfseries, coltitle=\tcblinecolor, colbacktitle=\tcblinecolor!10, boxed title style={colframe=\tcblinecolor, colback=\tcblinecolor!10, boxrule=0.6pt}, attach boxed title to top center={yshift=-2mm}, title={#2}, before skip=2mm, after skip=2mm, #1]
 }{%
   \end{tcolorbox}
 }
 
-% Custom bibliography/footcite logic
-\renewbibmacro*{title}{%
-  \ifboolexpr{test {\iffieldundef{title}}}
-  {}
-  {%
-    \iffieldundef{url}
-      {\textcolor{FlyersBlue}{\printfield[titlecase]{title}}}%
-      {\href{\thefield{url}}{\textcolor{FlyersBlue}{\printfield[titlecase]{title}}}}%
-  }%
-}
+%----------------------------------------------------------------------------------------
+%   BIBLIOGRAPHY
+%----------------------------------------------------------------------------------------
+
+\renewbibmacro*{title}{\ifboolexpr{test {\iffieldundef{title}}}{}{\iffieldundef{url}{\textcolor{FlyersBlue}{\printfield[titlecase]{title}}}{\href{\thefield{url}}{\textcolor{FlyersBlue}{\printfield[titlecase]{title}}}}}}
 \renewbibmacro*{urldate}{}
 \AtEveryBibitem{\clearfield{doi}}
-\DeclareFieldFormat{url}{%
-  \ifboolexpr{ test{\ifentrytype{misc}} or test{\ifentrytype{online}} }{%
-    \mkbibacro{URL}\addcolon\space\url{#1}%
-  }{}%
-}
-% Keep citation back-reference page numbers in FlyersRed
-% (biblatex backrefs are a list; style both field and list rendering)
+\DeclareFieldFormat{url}{\ifboolexpr{ test{\ifentrytype{misc}} or test{\ifentrytype{online}} }{\mkbibacro{URL}\addcolon\space\url{#1}}{}}
 \DeclareFieldFormat{pageref}{\textcolor{FlyersRed}{#1}}
 \DeclareListFormat{pageref}{\textcolor{FlyersRed}{#1}}
 
+\defbibheading{subbibliography}[1]{\par\vspace{1.1\baselineskip}\noindent\hspace*{-2.0\bibhang}\textcolor{FlyersRed}{\large\sffamily\bfseries #1}\par\nobreak\vspace{0.05\baselineskip}}
 
-% Bibliography heading style (left-aligned red title)
-\defbibheading{subbibliography}[1]{%
-  \par\vspace{1.1\baselineskip}\noindent\hspace*{-2.0\bibhang}\textcolor{FlyersRed}{\large\sffamily\bfseries #1}\par\nobreak\vspace{0.05\baselineskip}%
-}
-
-% Chapter include helper with per-chapter bibliography
 \let\latexchapter\chapter
 \newcommand{\chaptertitle}[1]{\latexchapter{#1}}
-\newcommand{\bookchapter}[1]{%
-  \begin{refsection}%
-    \input{#1}%
-    \printbibliography[heading=subbibliography,title={Bibliography}]%
-  \end{refsection}%
+\newcommand{\bookchapter}[1]{\begin{refsection}\input{#1}\printbibliography[heading=subbibliography,title={Bibliography}]\end{refsection}}
+
+%----------------------------------------------------------------------------------------
+%   TABLE OF CONTENTS
+%----------------------------------------------------------------------------------------
+
+\contentsmargin{0cm} 
+\titlecontents{chapter}[0cm]{\addvspace{15pt}\large\sffamily\bfseries}{\color{black}\contentslabel[\Large\thecontentslabel]{0.75cm}\color{black}}{}{\color{FlyersRed}\normalsize\sffamily\bfseries\hfill\thecontentspage}
+\titlecontents{section}[0.75cm]{\addvspace{5pt}\sffamily\bfseries\color{FlyersRed}}{\color{FlyersRed}\contentslabel[\thecontentslabel]{0.75cm}}{}{\sffamily\color{FlyersRed}\;\titlerule*[.5pc]{.}\;\thecontentspage}[]
+\titlecontents{subsection}[1.75cm]{\addvspace{1pt}\sffamily\small\color{FlyersBlue}}{\color{FlyersBlue}\contentslabel[\thecontentslabel]{1.0cm}}{}{\sffamily\color{FlyersBlue}\;\titlerule*[.5pc]{.}\;\thecontentspage}[] 
+\titlecontents{lsection}[0em]{\footnotesize\sffamily}{}{}{}
+\titlecontents{lsubsection}[.5em]{\normalfont\footnotesize\sffamily}{}{}{}
+\titlecontents{subsubsection}[3.0cm]{\addvspace{1pt}\sffamily\small\color{FlyersBlue}}{\color{FlyersBlue}\contentslabel[\thecontentslabel]{1.25cm}}{}{\sffamily\color{FlyersBlue}\;\titlerule*[.5pc]{.}\;\thecontentspage}[]
+
+%----------------------------------------------------------------------------------------
+%   PAGE STYLES
+%----------------------------------------------------------------------------------------
+
+\renewcommand{\chaptermark}[1]{\markboth{\sffamily\normalsize\bfseries\chaptername\ \thechapter.\ #1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\sffamily\normalsize\thesection\hspace{5pt}#1}{}}
+
+\setlength{\headheight}{15pt}
+
+\newcommand{\bookstylefancysetup}{%
+  \fancyhf{}
+  \fancyhead[LE,RO]{\sffamily\normalsize\thepage}
+  \fancyhead[LO]{\rightmark}
+  \fancyhead[RE]{\leftmark}
+  \renewcommand{\headrulewidth}{0.5pt}
+  \renewcommand{\footrulewidth}{0pt}
 }
 
-\usepackage{graphicx} % Required for including pictures
-\graphicspath{{Pictures/}} % Specifies the directory where pictures are stored
-% \graphicspath{{Plots/}}
-\usepackage{lipsum} % Inserts dummy text
+\newcommand{\bookstylesimplesetup}{%
+  \fancyhf{}
+  \fancyfoot[C]{\sffamily\normalsize\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt}
+}
 
-\usepackage{tikz} % Required for drawing custom shapes
+\fancypagestyle{fancy}{\bookstylefancysetup}
+\fancypagestyle{simple}{\bookstylesimplesetup}
 
-\usepackage[english]{babel} % English language/hyphenation
+\newcommand{\bookstyleplaintosimple}{%
+  \fancypagestyle{plain}{\bookstylesimplesetup}%
+}
 
-\usepackage{enumitem} % Customize lists
-\setlist{nolistsep} % Reduce spacing between bullet points and numbered lists
+\newcommand{\bookstyleplaintofancy}{%
+  \fancypagestyle{plain}{\bookstylefancysetup}%
+}
 
-\usepackage{booktabs} % Required for nicer horizontal rules in tables
+\bookstyleplaintosimple
 
-\usepackage{eso-pic} % Required for specifying an image background in the title page
-
-%----------------------------------------------------------------------------------------
-%\tMAIN TABLE OF CONTENTS
-%----------------------------------------------------------------------------------------
-
-\usepackage{titletoc} % Required for manipulating the table of contents
-
-\contentsmargin{0cm} % Removes the default margin
-% Chapter text styling
-\titlecontents{chapter}[0cm] % Indentation
-{\addvspace{15pt}\large\sffamily\bfseries} % Spacing and font options for chapters
-{\color{black}\contentslabel[\Large\thecontentslabel]{0.75cm}\color{black}} % Chapter number
-{}  
-{\color{FlyersRed}\normalsize\sffamily\bfseries\hfill\thecontentspage} % Page number
-
-% Section text styling
-\titlecontents{section}[0.75cm] % Indentation
-{\addvspace{5pt}\sffamily\bfseries\color{FlyersRed}} % Spacing and font options for sections
-{\color{FlyersRed}\contentslabel[\thecontentslabel]{0.75cm}} % Section number
-{}
-{\sffamily\color{FlyersRed}\;\titlerule*[.5pc]{.}\;\thecontentspage} % Page number
-[]
-
-% Subsection text styling
-\titlecontents{subsection}[1.75cm] % Indentation
-{\addvspace{1pt}\sffamily\small\color{FlyersBlue}} % Spacing and font options for subsections
-{\color{FlyersBlue}\contentslabel[\thecontentslabel]{1.0cm}} % Subsection number
-{}
-{\sffamily\color{FlyersBlue}\;\titlerule*[.5pc]{.}\;\thecontentspage} % Page number
-[] 
-
-%----------------------------------------------------------------------------------------
-%\tMINI TABLE OF CONTENTS IN CHAPTER HEADS
-%----------------------------------------------------------------------------------------
-
-% Section text styling
-\titlecontents{lsection}[0em] % Indendating
-{\footnotesize\sffamily} % Font settings
-{}
-{}
-{}
-
-% Subsection text styling
-\titlecontents{lsubsection}[.5em] % Indentation
-{\normalfont\footnotesize\sffamily} % Font settings
-{}
-{}
-{}
-
-% Subsubsection text styling
-\titlecontents{subsubsection}[3.0cm] % Indentation (adjusted to nest under subsection)
-{\addvspace{1pt}\sffamily\small\color{FlyersBlue}} % Font and Color
-{\color{FlyersBlue}\contentslabel[\thecontentslabel]{1.25cm}} % Number label
-{}
-{\sffamily\color{FlyersBlue}\;\titlerule*[.5pc]{.}\;\thecontentspage} % Dots and Page number
-[]
- 
-%----------------------------------------------------------------------------------------
-%\tPAGE HEADERS
-%----------------------------------------------------------------------------------------
-
-\usepackage{fancyhdr} % Required for header and footer configuration
-
-\pagestyle{fancy}
-\renewcommand{\chaptermark}[1]{\markboth{\sffamily\normalsize\bfseries\chaptername\ \thechapter.\ #1}{}} % Chapter text font settings
-\renewcommand{\sectionmark}[1]{\markright{\sffamily\normalsize\thesection\hspace{5pt}#1}{}} % Section text font settings
-\fancyhf{} \fancyhead[LE,RO]{\sffamily\normalsize\thepage} % Font setting for the page number in the header
-\fancyhead[LO]{\rightmark} % Print the nearest section name on the left side of odd pages
-\fancyhead[RE]{\leftmark} % Print the current chapter name on the right side of even pages
-\renewcommand{\headrulewidth}{0.5pt} % Width of the rule under the header
-\addtolength{\headheight}{2.5pt} % Increase the spacing around the header slightly
-\renewcommand{\footrulewidth}{0pt} % Removes the rule in the footer
-\fancypagestyle{plain}{\fancyhead{}\renewcommand{\headrulewidth}{0pt}} % Style for when a plain pagestyle is specified
-
-% Removes the header from odd empty pages at the end of chapters
 \makeatletter
-\renewcommand{\cleardoublepage}{
-\clearpage\ifodd\c@page\else
-\hbox{}
-\vspace*{\fill}
-\thispagestyle{empty}
-\newpage
-\fi}
+\AtBeginDocument{%
+  \apptocmd{\frontmatter}{\pagestyle{simple}\bookstyleplaintosimple}{}{%
+    \PackageWarning{bookstyle}{Could not patch \string\frontmatter}%
+  }%
+  \apptocmd{\mainmatter}{\pagestyle{fancy}\bookstyleplaintofancy}{}{%
+    \PackageWarning{bookstyle}{Could not patch \string\mainmatter}%
+  }%
+}
+
+\renewcommand{\cleardoublepage}{\clearpage\ifodd\c@page\else\hbox{}\vspace*{\fill}\thispagestyle{empty}\newpage\fi}
+\makeatother
 
 %----------------------------------------------------------------------------------------
-%\tTHEOREM STYLES
+%   THEOREM STYLES
 %----------------------------------------------------------------------------------------
-
-\usepackage{amsmath,amsfonts,amssymb,amsthm} % For math equations, theorems, symbols, etc
 
 \newcommand{\intoo}[2]{\mathopen{]}#1\,;#2\mathclose{[}}
 \newcommand{\ud}{\mathop{\mathrm{{}d}}\mathopen{}}
 \newcommand{\intff}[2]{\mathopen{[}#1\,;#2\mathclose{]}}
 \newtheorem{notation}{Notation}[chapter]
 
-\newtheoremstyle{ocrenumbox}% % Theorem style name
-{0pt}% Space above
-{0pt}% Space below
-{\normalfont}% % Body font
-{}% Indent amount
-{\small\bf\sffamily\color{FlyersRed}}% % Theorem head font
-{\;}% Punctuation after theorem head
-{0.25em}% Space after theorem head
-{\small\sffamily\color{FlyersRed}\thmname{#1}\nobreakspace\thmnumber{\@ifnotempty{#1}{}\@upn{#2}}
-\thmnote{\nobreakspace\the\thm@notefont\sffamily\bfseries\color{black}---\nobreakspace#3.}} % Optional theorem note
-\renewcommand{\qedsymbol}{$\blacksquare$}% Optional qed square
-
-\newtheoremstyle{blacknumex}% Theorem style name
-{5pt}% Space above
-{5pt}% Space below
-{\normalfont}% Body font
-{} % Indent amount
-{\small\bf\sffamily}% Theorem head font
-{\;}% Punctuation after theorem head
-{0.25em}% Space after theorem head
-{\small\sffamily{\tiny\ensuremath{\blacksquare}}\nobreakspace\thmname{#1}\nobreakspace\thmnumber{\@ifnotempty{#1}{}\@upn{#2}}
-\thmnote{\nobreakspace\the\thm@notefont\sffamily\bfseries---\nobreakspace#3.}}
-
-\newtheoremstyle{blacknumbox} % Theorem style name
-{0pt}% Space above
-{0pt}% Space below
-{\normalfont}% Body font
-{}% Indent amount
-{\small\bf\sffamily}% Theorem head font
-{\;}% Punctuation after theorem head
-{0.25em}% Space after theorem head
-{\small\sffamily\thmname{#1}\nobreakspace\thmnumber{\@ifnotempty{#1}{}\@upn{#2}}
-\thmnote{\nobreakspace\the\thm@notefont\sffamily\bfseries---\nobreakspace#3.}}
-
-\newtheoremstyle{ocrenum}% % Theorem style name
-{5pt}% Space above
-{5pt}% Space below
-{\normalfont}% % Body font
-{}% Indent amount
-{\small\bf\sffamily\color{FlyersRed}}% % Theorem head font
-{\;}% Punctuation after theorem head
-{0.25em}% Space after theorem head
-{\small\sffamily\color{FlyersRed}\thmname{#1}\nobreakspace\thmnumber{\@ifnotempty{#1}{}\@upn{#2}}
-\thmnote{\nobreakspace\the\thm@notefont\sffamily\bfseries\color{black}---\nobreakspace#3.}} % Optional theorem note
-\renewcommand{\qedsymbol}{$\blacksquare$}% Optional qed square
+\makeatletter
+\newtheoremstyle{ocrenumbox}{0pt}{0pt}{\normalfont}{}{\small\bf\sffamily\color{FlyersRed}}{\;}{0.25em}{\small\sffamily\color{FlyersRed}\thmname{#1}\nobreakspace\thmnumber{\@ifnotempty{#1}{}\@upn{#2}}\thmnote{\nobreakspace\the\thm@notefont\sffamily\bfseries\color{black}---\nobreakspace#3.}}
+\newtheoremstyle{blacknumex}{5pt}{5pt}{\normalfont}{}{\small\bf\sffamily}{\;}{0.25em}{\small\sffamily{\tiny\ensuremath{\blacksquare}}\nobreakspace\thmname{#1}\nobreakspace\thmnumber{\@ifnotempty{#1}{}\@upn{#2}}\thmnote{\nobreakspace\the\thm@notefont\sffamily\bfseries---\nobreakspace#3.}}
+\newtheoremstyle{blacknumbox}{0pt}{0pt}{\normalfont}{}{\small\bf\sffamily}{\;}{0.25em}{\small\sffamily\thmname{#1}\nobreakspace\thmnumber{\@ifnotempty{#1}{}\@upn{#2}}\thmnote{\nobreakspace\the\thm@notefont\sffamily\bfseries---\nobreakspace#3.}}
+\newtheoremstyle{ocrenum}{5pt}{5pt}{\normalfont}{}{\small\bf\sffamily\color{FlyersRed}}{\;}{0.25em}{\small\sffamily\color{FlyersRed}\thmname{#1}\nobreakspace\thmnumber{\@ifnotempty{#1}{}\@upn{#2}}\thmnote{\nobreakspace\the\thm@notefont\sffamily\bfseries\color{black}---\nobreakspace#3.}}
 \makeatother
 
 \newcounter{dummy} 
 \numberwithin{dummy}{section}
 \theoremstyle{ocrenumbox}
-
 \newtheorem{theoremeT}[dummy]{Theorem}
 \newtheorem{lemma}[dummy]{Lemma}
 \newtheorem{observation}[dummy]{Observation}
@@ -272,7 +167,6 @@
 \newtheorem{claim}[dummy]{Claim}
 \newtheorem{fact}[dummy]{Fact}
 \newtheorem{assumption}[dummy]{Assumption}
-
 \newtheorem{problem}{Problem}[chapter]
 \theoremstyle{blacknumex}
 \newtheorem{exampleT}{Example}[chapter]
@@ -280,161 +174,50 @@
 \newtheorem{vocabulary}{Vocabulary}[chapter]
 \newtheorem{definitionT}{Definition}[section]
 \newtheorem{corollaryT}[dummy]{Corollary}
-\theoremstyle{ocrenum}
 
-\RequirePackage[framemethod=default]{mdframed}
-% Theorem box
-\newmdenv[skipabove=7pt,
-skipbelow=7pt,
-backgroundcolor=black!5,
-linecolor=FlyersRed,
-innerleftmargin=5pt,
-innerrightmargin=5pt,
-innertopmargin=5pt,
-leftmargin=0cm,
-rightmargin=0cm,
-innerbottommargin=5pt]{tBox}
+\newmdenv[skipabove=7pt,skipbelow=7pt,backgroundcolor=black!5,linecolor=FlyersRed,innerleftmargin=5pt,innerrightmargin=5pt,innertopmargin=5pt,leftmargin=0cm,rightmargin=0cm,innerbottommargin=5pt]{tBox}
+\newmdenv[skipabove=7pt,skipbelow=7pt,rightline=false,leftline=true,topline=false,bottomline=false,backgroundcolor=FlyersRed!10,linecolor=FlyersRed,innerleftmargin=5pt,innerrightmargin=5pt,innertopmargin=5pt,innerbottommargin=5pt,leftmargin=0cm,rightmargin=0cm,linewidth=4pt]{eBox}  
+\newmdenv[skipabove=7pt,skipbelow=7pt,rightline=false,leftline=true,topline=false,bottomline=false,linecolor=FlyersRed,innerleftmargin=5pt,innerrightmargin=5pt,innertopmargin=0pt,leftmargin=0cm,rightmargin=0cm,linewidth=4pt,innerbottommargin=0pt]{dBox}  
+\newmdenv[skipabove=7pt,skipbelow=7pt,rightline=false,leftline=true,topline=false,bottomline=false,linecolor=gray,backgroundcolor=black!5,innerleftmargin=5pt,innerrightmargin=5pt,innertopmargin=5pt,leftmargin=0cm,rightmargin=0cm,linewidth=4pt,innerbottommargin=5pt]{cBox}
 
-% Exercise box	  
-\newmdenv[skipabove=7pt,
-skipbelow=7pt,
-rightline=false,
-leftline=true,
-topline=false,
-bottomline=false,
-backgroundcolor=FlyersRed!10,
-linecolor=FlyersRed,
-innerleftmargin=5pt,
-innerrightmargin=5pt,
-innertopmargin=5pt,
-innerbottommargin=5pt,
-leftmargin=0cm,
-rightmargin=0cm,
-linewidth=4pt]{eBox}	
-
-% Definition box
-\newmdenv[skipabove=7pt,
-skipbelow=7pt,
-rightline=false,
-leftline=true,
-topline=false,
-bottomline=false,
-linecolor=FlyersRed,
-innerleftmargin=5pt,
-innerrightmargin=5pt,
-innertopmargin=0pt,
-leftmargin=0cm,
-rightmargin=0cm,
-linewidth=4pt,
-innerbottommargin=0pt]{dBox}	
-
-% Corollary box
-\newmdenv[skipabove=7pt,
-skipbelow=7pt,
-rightline=false,
-leftline=true,
-topline=false,
-bottomline=false,
-linecolor=gray,
-backgroundcolor=black!5,
-innerleftmargin=5pt,
-innerrightmargin=5pt,
-innertopmargin=5pt,
-leftmargin=0cm,
-rightmargin=0cm,
-linewidth=4pt,
-innerbottommargin=5pt]{cBox}
-
-% Creates an environment for each type of theorem and assigns it a theorem text style from the "Theorem Styles" section above and a colored box from above
 \newenvironment{theorem}{\begin{tBox}\begin{theoremeT}}{\end{theoremeT}\end{tBox}}
-\newenvironment{exercise}{\begin{eBox}\begin{exerciseT}}{\hfill{\color{FlyersRed}\tiny\ensuremath{\blacksquare}}\end{exerciseT}\end{eBox}}				  
-\newenvironment{definition}{\begin{dBox}\begin{definitionT}}{\end{definitionT}\end{dBox}}	
-\newenvironment{example}{\begin{exampleT}}{\hfill{\tiny\ensuremath{\blacksquare}}\end{exampleT}}		
-\newenvironment{corollary}{\begin{cBox}\begin{corollaryT}}{\end{corollaryT}\end{cBox}}	
+\newenvironment{definition}{\begin{dBox}\begin{definitionT}}{\end{definitionT}\end{dBox}} 
+\newenvironment{example}{\begin{exampleT}}{\hfill{\tiny\ensuremath{\blacksquare}}\end{exampleT}}    
+\newenvironment{corollary}{\begin{cBox}\begin{corollaryT}}{\end{corollaryT}\end{cBox}}  
+
+\newenvironment{remark}{\par\vspace{10pt}\small\begin{list}{}{\leftmargin=35pt \rightmargin=25pt}\item\ignorespaces\makebox[-2.5pt]{\begin{tikzpicture}[overlay]\node[draw=FlyersRed!60,line width=1pt,circle,fill=FlyersRed!25,font=\sffamily\bfseries,inner sep=2pt,outer sep=0pt] at (-15pt,0pt){\textcolor{FlyersRed}{R}};\end{tikzpicture}}\advance\baselineskip -1pt}{\end{list}\vskip5pt}
 
 %----------------------------------------------------------------------------------------
-%	REMARK ENVIRONMENT
-%----------------------------------------------------------------------------------------
-
-\newenvironment{remark}{\par\vspace{10pt}\small % Vertical white space above the remark and smaller font size
-\begin{list}{}{
-\leftmargin=35pt % Indentation on the left
-\rightmargin=25pt}\item\ignorespaces % Indentation on the right
-\makebox[-2.5pt]{\begin{tikzpicture}[overlay]
-\node[draw=FlyersRed!60,line width=1pt,circle,fill=FlyersRed!25,font=\sffamily\bfseries,inner sep=2pt,outer sep=0pt] at (-15pt,0pt){\textcolor{FlyersRed}{R}};\end{tikzpicture}} % Orange R in a circle
-\advance\baselineskip -1pt}{\end{list}\vskip5pt} % Tighter line spacing and white space after remark
-
-%----------------------------------------------------------------------------------------
-%	SECTION NUMBERING IN THE MARGIN
+%   SECTION NUMBERING
 %----------------------------------------------------------------------------------------
 
 \makeatletter
-
-% 1. Custom Numbering Color (Margin Numbers)
-% Section = Red, Subsection & Subsubsection = Blue
-\renewcommand{\@seccntformat}[1]{%
-  \llap{%
-    \ifstrequal{#1}{section}%
-      {\textcolor{FlyersRed}{\csname the#1\endcsname}}%
-      {\textcolor{FlyersBlue}{\csname the#1\endcsname}}%
-    \hspace{1em}%
-  }%
-}
-
-% 2. Section Title - Red Text
-\renewcommand{\section}{\@startsection{section}{1}{\z@}
-{-4ex \@plus -1ex \@minus -.4ex}
-{1ex \@plus.2ex }
-{\normalfont\large\sffamily\bfseries\color{FlyersRed}}}
-
-% 3. Subsection Title - Blue Text
-\renewcommand{\subsection}{\@startsection {subsection}{2}{\z@}
-{-3ex \@plus -0.1ex \@minus -.4ex}
-{1.5ex \@plus.2ex }
-{\normalfont\sffamily\bfseries\color{FlyersBlue}}}
-
-% 4. Subsubsection Title - Blue Text
-\renewcommand{\subsubsection}{\@startsection {subsubsection}{3}{\z@}
-{-2ex \@plus -0.1ex \@minus -.2ex}
-{.2ex \@plus.2ex }
-{\normalfont\small\sffamily\bfseries\color{FlyersBlue}}}
-
-% 5. Paragraph (Neutral)
-\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}
-{-2ex \@plus-.2ex \@minus .2ex}
-{.1ex}
-{\normalfont\small\sffamily\bfseries}}
-
+\renewcommand{\@seccntformat}[1]{\llap{\ifstrequal{#1}{section}{\textcolor{FlyersRed}{\csname the#1\endcsname}}{\textcolor{FlyersBlue}{\csname the#1\endcsname}}\hspace{1em}}}
+\renewcommand{\section}{\@startsection{section}{1}{\z@}{-4ex \@plus -1ex \@minus -.4ex}{1ex \@plus.2ex }{\normalfont\large\sffamily\bfseries\color{FlyersRed}}}
+\renewcommand{\subsection}{\@startsection {subsection}{2}{\z@}{-3ex \@plus -0.1ex \@minus -.4ex}{1.5ex \@plus.2ex }{\normalfont\sffamily\bfseries\color{FlyersBlue}}}
+\renewcommand{\subsubsection}{\@startsection {subsubsection}{3}{\z@}{-2ex \@plus -0.1ex \@minus -.2ex}{.2ex \@plus.2ex }{\normalfont\small\sffamily\bfseries\color{FlyersBlue}}}
+\makeatother
 
 %----------------------------------------------------------------------------------------
-%	HYPERLINKS IN THE DOCUMENTS
+%   HYPERLINKS
 %----------------------------------------------------------------------------------------
 
-% For an unclear reason, the package should be loaded now and not later
 \usepackage{hyperref}
 \hypersetup{hidelinks,backref=true,pagebackref=true,hyperindex=true,colorlinks=true,breaklinks=true,urlcolor=FlyersRed,citecolor=FlyersBlue,linkcolor=.,bookmarks=true,bookmarksopen=false,pdftitle={Title},pdfauthor={Author}}
 
 %----------------------------------------------------------------------------------------
-% CHAPTER HEADINGS - REVISED
+%   CHAPTER HEADINGS
 %----------------------------------------------------------------------------------------
 
 \newcommand{\thechapterimage}{}
 \newcommand{\chapterimage}[1]{\renewcommand{\thechapterimage}{#1}}
 
-% 1. Fix the "plain" style so page numbers actually show up on chapter starts
-\fancypagestyle{plain}{
-  \fancyhf{}
-  \fancyfoot[C]{\sffamily\normalsize\thepage} % Put number in bottom center
-  \renewcommand{\headrulewidth}{0pt}
-}
-
 \makeatletter
-% 2. Numbered chapters (Main Matter)
+% Numbered chapters (Main Matter)
 \def\@makechapterhead#1{
-  \thispagestyle{plain} % Ensure number shows on this page
+  \thispagestyle{fancy}
   {\centering \normalfont\sffamily
   \ifnum \c@secnumdepth >\m@ne
-    % We print the image header for numbered chapters
     \startcontents
     \begin{tikzpicture}[remember picture,overlay]
       \node at (current page.north west)
@@ -447,11 +230,10 @@ innerbottommargin=5pt]{cBox}
   \fi}
 }
 
-% 3. Unnumbered chapters (TOC, Preface, Front Matter)
+% Unnumbered chapters
 \def\@makeschapterhead#1{
-  \thispagestyle{plain}
   \if@mainmatter
-    % If you use \chapter* in the Main Matter, show the image header
+    \thispagestyle{fancy}
     {\centering \normalfont\sffamily
     \begin{tikzpicture}[remember picture,overlay]
       \node at (current page.north west)
@@ -462,12 +244,9 @@ innerbottommargin=5pt]{cBox}
     \end{tikzpicture}
     \par\vspace*{230\p@}}
   \else
-    % THIS IS THE FRONT MATTER (TOC) - Just text, no image
+    \thispagestyle{simple}
     \vspace*{50pt}
-    {\parindent \z@ \raggedright \normalfont
-    \sffamily\Huge\bfseries\color{FlyersRed} #1
-    \par\nobreak
-    \vspace{40pt}}
+    {\parindent \z@ \raggedright \normalfont \sffamily\Huge\bfseries\color{FlyersRed} #1 \par\nobreak \vspace{40pt}}
   \fi
 }
 \makeatother
