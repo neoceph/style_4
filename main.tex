@@ -50,20 +50,44 @@
 %	TITLE PAGE
 %----------------------------------------------------------------------------------------
 
+\newgeometry{top=3cm,bottom=3cm,left=2.0cm,right=2.0cm,headsep=10pt,letterpaper}
+
 \begingroup
 \thispagestyle{empty}
 \AddToShipoutPicture*{\put(0,0){\includegraphics[scale=1.25]{esahubble}}} % Image background
 \centering
 \vspace*{5cm}
 \par\normalfont\fontsize{35}{35}\sffamily\selectfont
+\color{white}
 \textbf{Scientific Machine Learning}\\
-{\LARGE Convex Analysis and Optimization}\par % Book title
+{\LARGE Theory, Methods, and Engineering Applications}\par % Book title
 \vspace*{1cm}
 {\Huge Abdullah Al Amin}\par % Author name
 \begin{flushright}
     {\Large \bookedition}\par
 \end{flushright}
 \endgroup
+
+%----------------------------------------------------------------------------------------
+%	INSIDE COVER PAGE
+%----------------------------------------------------------------------------------------
+
+\newpage
+\begingroup
+\thispagestyle{empty}
+\centering
+\vspace*{5cm}
+\par\normalfont\fontsize{35}{35}\sffamily\selectfont
+\color{black}
+\textbf{Scientific Machine Learning}\\
+{\LARGE Theory, Methods, and Engineering Applications}\par
+\vspace*{1cm}
+{\Huge Abdullah Al Amin}\par
+\begin{flushright}
+    {\Large \bookedition}\par
+\end{flushright}
+\endgroup
+\restoregeometry
 
 %----------------------------------------------------------------------------------------
 %	COPYRIGHT PAGE
