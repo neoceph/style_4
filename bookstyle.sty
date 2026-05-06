@@ -415,19 +415,27 @@ innerbottommargin=5pt]{cBox}
 \hypersetup{hidelinks,backref=true,pagebackref=true,hyperindex=true,colorlinks=true,breaklinks=true,urlcolor=FlyersRed,citecolor=FlyersBlue,linkcolor=.,bookmarks=true,bookmarksopen=false,pdftitle={Title},pdfauthor={Author}}
 
 %----------------------------------------------------------------------------------------
-%	CHAPTER HEADINGS
+% CHAPTER HEADINGS - REVISED
 %----------------------------------------------------------------------------------------
-
-% The set-up below should be (sadly) manually adapted to the overall margin page septup controlled by the geometry package loaded in the main.tex document. It is possible to implement below the dimensions used in the goemetry package (top,bottom,left,right)... TO BE DONE
 
 \newcommand{\thechapterimage}{}
 \newcommand{\chapterimage}[1]{\renewcommand{\thechapterimage}{#1}}
 
-% Numbered chapters
+% 1. Fix the "plain" style so page numbers actually show up on chapter starts
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyfoot[C]{\sffamily\normalsize\thepage} % Put number in bottom center
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+\makeatletter
+% 2. Numbered chapters (Main Matter)
 \def\@makechapterhead#1{
-  \thispagestyle{empty}
-  \if@mainmatter % Move the check to the very top
-    {\centering \normalfont\sffamily
+  \thispagestyle{plain} % Ensure number shows on this page
+  {\centering \normalfont\sffamily
+  \ifnum \c@secnumdepth >\m@ne
+    % We print the image header for numbered chapters
+    \startcontents
     \begin{tikzpicture}[remember picture,overlay]
       \node at (current page.north west)
       {\begin{tikzpicture}[remember picture,overlay]
@@ -435,15 +443,15 @@ innerbottommargin=5pt]{cBox}
       \draw[anchor=west] (5cm,-9cm) node [rounded corners=20pt,fill=FlyersRed!10!white,text opacity=1,draw=FlyersRed,draw opacity=1,line width=1.5pt,fill opacity=.6,inner sep=12pt]{\huge\sffamily\bfseries\textcolor{black}{\thechapter. #1\strut\makebox[22cm]{}}};
       \end{tikzpicture}};
     \end{tikzpicture}
-    \par\vspace*{230\p@}} % The \par here and the closing brace stop the centering
-  \fi
+    \par\vspace*{230\p@}
+  \fi}
 }
 
-% Unnumbered chapters (TOC, Preface, etc.)
+% 3. Unnumbered chapters (TOC, Preface, Front Matter)
 \def\@makeschapterhead#1{
-  \thispagestyle{empty}
+  \thispagestyle{plain}
   \if@mainmatter
-    % --- WHAT HAPPENS IN MAIN CHAPTERS (Big Image) ---
+    % If you use \chapter* in the Main Matter, show the image header
     {\centering \normalfont\sffamily
     \begin{tikzpicture}[remember picture,overlay]
       \node at (current page.north west)
@@ -454,16 +462,12 @@ innerbottommargin=5pt]{cBox}
     \end{tikzpicture}
     \par\vspace*{230\p@}}
   \else
-    % --- WHAT HAPPENS IN FRONT MATTER (TOC Page) ---
-    \vspace*{50pt} % Adjust this to move the title up or down
+    % THIS IS THE FRONT MATTER (TOC) - Just text, no image
+    \vspace*{50pt}
     {\parindent \z@ \raggedright \normalfont
     \sffamily\Huge\bfseries\color{FlyersRed} #1
     \par\nobreak
     \vspace{40pt}}
   \fi
 }
-
-\setcounter{secnumdepth}{3} % Numbering for subsubsections
-\setcounter{tocdepth}{3}    % Include subsubsections in TOC
-
 \makeatother
