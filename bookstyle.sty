@@ -81,6 +81,10 @@
     \mkbibacro{URL}\addcolon\space\url{#1}%
   }{}%
 }
+% Keep citation back-reference page numbers in FlyersRed
+% (biblatex backrefs are a list; style both field and list rendering)
+\DeclareFieldFormat{pageref}{\textcolor{FlyersRed}{#1}}
+\DeclareListFormat{pageref}{\textcolor{FlyersRed}{#1}}
 
 
 % Bibliography heading style (left-aligned red title)
@@ -129,17 +133,17 @@
 {\color{FlyersRed!60}\normalsize\sffamily\bfseries\;\titlerule*[.5pc]{.}\;\thecontentspage} % Page number
 % Section text styling
 \titlecontents{section}[1.25cm] % Indentation
-{\addvspace{5pt}\sffamily\bfseries\color{black}} % Spacing and font options for sections
-{\color{black}\contentslabel[\thecontentslabel]{1.25cm}} % Section number
+{\addvspace{5pt}\sffamily\bfseries\color{FlyersRed}} % Spacing and font options for sections
+{\color{FlyersRed}\contentslabel[\thecontentslabel]{1.25cm}} % Section number
 {}
-{\sffamily\color{black}\hfill\thecontentspage} % Page number
+{\sffamily\color{FlyersRed}\hfill\thecontentspage} % Page number
 []
 % Subsection text styling
 \titlecontents{subsection}[1.25cm] % Indentation
-{\addvspace{1pt}\sffamily\small\color{black}} % Spacing and font options for subsections
-{\color{black}\contentslabel[\thecontentslabel]{1.25cm}} % Subsection number
+{\addvspace{1pt}\sffamily\small\color{FlyersBlue}} % Spacing and font options for subsections
+{\color{FlyersBlue}\contentslabel[\thecontentslabel]{1.25cm}} % Subsection number
 {}
-{\sffamily\color{black}\;\titlerule*[.5pc]{.}\;\thecontentspage} % Page number
+{\sffamily\color{FlyersBlue}\;\titlerule*[.5pc]{.}\;\thecontentspage} % Page number
 [] 
 
 %----------------------------------------------------------------------------------------
@@ -377,7 +381,7 @@ innerbottommargin=5pt]{cBox}
 
 % For an unclear reason, the package should be loaded now and not later
 \usepackage{hyperref}
-\hypersetup{hidelinks,backref=true,pagebackref=true,hyperindex=true,colorlinks=true,breaklinks=true,urlcolor=FlyersRed,citecolor=FlyersBlue,linkcolor=FlyersRed,bookmarks=true,bookmarksopen=false,pdftitle={Title},pdfauthor={Author}}
+\hypersetup{hidelinks,backref=true,pagebackref=true,hyperindex=true,colorlinks=true,breaklinks=true,urlcolor=FlyersRed,citecolor=FlyersBlue,linkcolor=.,bookmarks=true,bookmarksopen=false,pdftitle={Title},pdfauthor={Author}}
 
 %----------------------------------------------------------------------------------------
 %	CHAPTER HEADINGS
